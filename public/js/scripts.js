@@ -1,44 +1,11 @@
 const colorPalette =[]
 
 $('.palette-generator').on('click', prependColors)
-// $('.palette-container').on('click', '.lock-button', toggleLock);
+$('.palette-container').on('click', '.container', toggleLock)
 
-// function toggleLock() {
-//   colorPalette.forEach(color => {
-//     console.log($(this).parent().hasClass(`color${color.id}`))
-//     if($(this).parent().hasClass(`color${color.id}`)){
-//       color.locked = !color.locked
-//       $(this).parent().toggleClass('unlocked')
-//     }
-//   })
-//   console.log(colorPalette)
-// }
-
-// function fillPalette() {
-//   if (!colorPalette.length) {
-//     for (var i = 0; i < 5; i++) {
-//       colorPalette.push({
-//         color: generatePalette(),
-//         locked: false,
-//         id: i + 1
-//       })
-//     }
-//   } else {
-//     colorPalette.forEach((color, index) => {
-//       if (color.locked === false) {
-//         colorPalette.splice(index, 1)
-//         colorPalette.push({
-//           color: generatePalette(),
-//           locked: false,
-//         })
-//       } else {
-//         console.log(color)
-//       }
-//     })
-//   }
-//   $('.unlocked').remove();
-//   prependColors();
-// }
+function toggleLock() {
+  $(this).toggleClass('locked')
+}
 
 function generateColor() {
   const possible = 'abcdef0123456789'
