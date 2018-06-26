@@ -21,22 +21,25 @@
       <div class='container color-5'></div>
     </div>
     <button class='palette-generator'>Generate Palette</button>
-    <form>
+    <form class='palette-form'>
       <select class='projects'>
         <option>Project 1</option>
         <option>Project 2</option>
         <option>Project 3</option>        
       </select>
-      <input type='text' />
-      <button type='submit'>Save Palette</button>
+      <input type='text' class='palette-name' placeholder='Palette Name'/>
+      <button type='submit' class='submit-palette'>Save Palette</button>
     </form>    
   </div>
-  <div class='projects'>
-    <p>Create a new project:</p>
-    <form>
+  <hr/>
+  <div class='project-form-container'>
+    <p>Create a project:</p>
+    <form class='project-form'>
       <input type='text' />
       <button type='submit'>Save Project</button>
     </form>
+  </div>
+  <div class='projects-container'>
   </div>
   <script type='text/javascript' src='./js/jquery.js'></script>
   <script type='text/javascript' src='./js/scripts.js'></script>
