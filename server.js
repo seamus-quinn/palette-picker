@@ -7,7 +7,7 @@ app.locals.title = 'Palette Picker';
 app.use(express.static('public'))
 
 app.get('/', (request, response) => {
-
+  
 })
 
 app.listen(app.get('port'), () => {
