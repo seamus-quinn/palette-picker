@@ -1,19 +1,46 @@
 const colorPalette =[]
 
-const paletteGenerator = document.querySelector('.palette-generator')
+$('.palette-generator').on('click', prependColors)
+// $('.palette-container').on('click', '.lock-button', toggleLock);
 
-paletteGenerator.addEventListener('click', prependColors)
+// function toggleLock() {
+//   colorPalette.forEach(color => {
+//     console.log($(this).parent().hasClass(`color${color.id}`))
+//     if($(this).parent().hasClass(`color${color.id}`)){
+//       color.locked = !color.locked
+//       $(this).parent().toggleClass('unlocked')
+//     }
+//   })
+//   console.log(colorPalette)
+// }
 
-function fillPalette() {
-  for (var i = 0; i < 6; i++) {
-    colorPalette.push({
-      color: generatePalette(),
-      locked: false
-    })
-  }
-}
+// function fillPalette() {
+//   if (!colorPalette.length) {
+//     for (var i = 0; i < 5; i++) {
+//       colorPalette.push({
+//         color: generatePalette(),
+//         locked: false,
+//         id: i + 1
+//       })
+//     }
+//   } else {
+//     colorPalette.forEach((color, index) => {
+//       if (color.locked === false) {
+//         colorPalette.splice(index, 1)
+//         colorPalette.push({
+//           color: generatePalette(),
+//           locked: false,
+//         })
+//       } else {
+//         console.log(color)
+//       }
+//     })
+//   }
+//   $('.unlocked').remove();
+//   prependColors();
+// }
 
-function generatePalette() {
+function generateColor() {
   const possible = 'abcdef0123456789'
   const hexCode = []
   for (var i = 0; i < 6; i++) {
@@ -23,19 +50,31 @@ function generatePalette() {
 }
 
 function prependColors() {
-  colorPalette.forEach(color => {
-    if (color.locked === false) {
+  if (!colorPalette.length) {
+    for (var i = 0; i < 5; i++) {
       $('.palette-container').prepend(
         `<div
-          class='container'
-          style='background-color:${color.color}'
-         ></div>`
+        class='container color${i + 1}'
+        style='background-color:${generateColor()}'
+        >
+        <button
+        class='lock-button'
+        >Lock</button>
+        </div>`
       )
+      colorPalette.push(`color${i + 1}`)
     }
-  })
+  } else {
+    colorPalette.forEach(color => {
+      if ($(`.${color}`).hasClass('locked')) {
+        return;
+      } else {
+        $(`.${color}`).css({ 'background-color': generateColor()})
+      }
+    })
+  }
 }
 
-fillPalette()
 prependColors()
 
 console.log(colorPalette)
