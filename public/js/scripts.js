@@ -4,6 +4,21 @@ const projects = []
 $('.palette-generator').on('click', prependColors)
 $('.palette-container').on('click', '.container', toggleLock)
 $('.project-form').on('submit', createProject)
+$('.palette-form').on('submit', savePalette)
+
+function savePalette(event) {
+  event.preventDefault();
+  const paletteName = $('.palette-input').val();
+  const projectName = $('.projects option:selected').text();
+  colorPalette.forEach(palette => {
+    const color = $(`.${palette}`).css('background-color')
+    $(`.project-${projectName}`).append(
+      `<div
+        style='background-color:${color}; width: 100px; height: 100px'
+       ></div>`
+    )
+  })
+}
 
 function createProject(event) {
   event.preventDefault();
@@ -14,18 +29,18 @@ function createProject(event) {
     }
     $('.projects-container').prepend(
       `<div
-        class='project'
+        class='project-${projectName}'
        >
        <h1 class='project-title'>${projectName}</h1>
+       <div class='created-palette-container'>
+       </div>
        </div>`
     )
     $('.projects').prepend(
-      `<option>${projectName}</option>`
+      `<option class='${projectName}'>${projectName}</option>`
     )
     projects.push(projectName)
-    console.log(projects)
   } else {
-    console.log('woo')
     $('.project-form').append(
       `<p class='project-error'>That project name already exists, please choose another</p>`
     )
