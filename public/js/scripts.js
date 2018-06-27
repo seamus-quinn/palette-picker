@@ -10,14 +10,32 @@ function savePalette(event) {
   event.preventDefault();
   const paletteName = $('.palette-input').val();
   const projectName = $('.projects option:selected').text();
-  colorPalette.forEach(palette => {
-    const color = $(`.${palette}`).css('background-color')
-    $(`.project-${projectName}`).append(
-      `<div
+  if (projectName === 'Please select a project') {
+    $('.error').remove();    
+    $('.palette-form').append(
+      `<p class='project-name-error error'>Please select or create a project to save a color palette</p>`
+    )
+  } else if (projectName && !paletteName) {
+    $('.error').remove();    
+    $('.palette-form').append(
+      `<p class='palette-name-error error'>Please input a name for this color palette to save it</p>`
+    )
+  } else if (!projectName && paletteName) {
+    $('.error').remove();
+    $('.palette-form').append(
+      `<p class='project-name-error error'>Please select or create a project to save a color palette</p>`
+    )
+  } else {
+    $('.error').remove();
+    colorPalette.forEach(palette => {
+      const color = $(`.${palette}`).css('background-color')
+      $(`.project-${projectName}`).append(
+        `<div
         style='background-color:${color}; width: 100px; height: 100px'
        ></div>`
-    )
-  })
+      )
+    })
+  }
 }
 
 function createProject(event) {
