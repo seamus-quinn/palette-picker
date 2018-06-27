@@ -83,6 +83,22 @@ app.post('/api/v1/palettes', (request, response) => {
     })
 })
 
+app.delete('/api/v1/palettes/:id', (request, response) => {
+  const { id } = request.params
+
+  database('palettes').where('id', id).del()
+    .then(rowsDeleted => {
+      if(!rowsDeleted) {
+        response.status(404).json({"error": "Error no matching ID found, please provide a valid ID."})
+      } else {
+        response.sendStatus(204)
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+})
+
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`)
 })
