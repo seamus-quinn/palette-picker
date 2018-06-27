@@ -2,6 +2,13 @@ const colorPalette =[]
 
 $('.palette-generator').on('click', prependColors)
 $('.palette-container').on('click', '.container', toggleLock)
+$('.project-form').on('submit', createProject)
+
+function createProject(event) {
+  event.preventDefault();
+  const projectName = $('.project-input').text();
+  console.log(projectName)
+}
 
 function toggleLock() {
   $(this).toggleClass('locked')
@@ -43,6 +50,4 @@ function prependColors() {
 }
 
 prependColors()
-
-console.log(colorPalette)
 
