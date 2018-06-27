@@ -1,4 +1,5 @@
 const colorPalette =[]
+const projects = []
 
 $('.palette-generator').on('click', prependColors)
 $('.palette-container').on('click', '.container', toggleLock)
@@ -6,8 +7,23 @@ $('.project-form').on('submit', createProject)
 
 function createProject(event) {
   event.preventDefault();
-  const projectName = $('.project-input').text();
-  console.log(projectName)
+  const projectName = $('.project-input').val();
+  if (!projects.includes(projectName)){
+    if($('.project-error')){
+      $('.project-error').remove();
+    }
+    $('.projects').prepend(
+      `<option>${projectName}</option>`
+    )
+    projects.push(projectName)
+    console.log(projects)
+  } else {
+    console.log('woo')
+    $('.project-form').append(
+      `<p class='project-error'>That project name already exists, please choose another</p>`
+    )
+  }
+  
 }
 
 function toggleLock() {
