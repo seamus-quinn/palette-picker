@@ -13,6 +13,11 @@ app.locals.palettes = []
 
 app.use(bodyParser.json())
 app.use(express.static('public'))
+app.use(function (request, response, next) {
+  response.header("Access-Control-Allow-Origin", "*");
+  response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.get('/api/v1/projects', (request, response) => {
   database('projects').select()
