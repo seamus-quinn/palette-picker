@@ -12,6 +12,13 @@ function createProject(event) {
     if($('.project-error')){
       $('.project-error').remove();
     }
+    $('.projects-container').prepend(
+      `<div
+        class='project'
+       >
+       <h1 class='project-title'>${projectName}</h1>
+       </div>`
+    )
     $('.projects').prepend(
       `<option>${projectName}</option>`
     )
