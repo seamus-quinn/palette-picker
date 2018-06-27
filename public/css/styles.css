@@ -3,7 +3,6 @@
   color: #fff; 
   font-family: 'Work Sans', sans-serif;
   font-weight: 300;
-  background-image: url('../assets/dark-triangles.png')
 }
 
 form {
@@ -34,26 +33,6 @@ form {
   width: 200px;
   height: 300px;
   margin: 20px;
-}
-
-.color-1 {
-  background: #F1FFFA
-}
-
-.color-2 {
-  background: #CCFCCB
-}
-
-.color-3 {
-  background: #96E6B3
-}
-
-.color-4 {
-  background: #568259
-}
-
-.color-5 {
-  background: #464E47
 }
 
 .palette-generator {
@@ -92,7 +71,7 @@ form {
   outline: 0
 }
 
-.palette-name {
+.palette-input {
   width: 200px;
   height: 25px;
   margin: 2%;
