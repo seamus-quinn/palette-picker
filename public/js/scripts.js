@@ -60,10 +60,12 @@ function prependProjects(projects) {
 }
 
 function prependPalettes(palettes) {
+  console.log(palettes)
   palettes.forEach(palette => {
-    const { color1, color2, color3, color4, color5, project_id } = palette
+    const { name, color1, color2, color3, color4, color5, project_id } = palette
     $(`.${project_id}`).prepend(
-      `<div
+      `<h1>${name}</h1>
+       <div
         style='background-color:${color1}; width: 100px; height: 100px'
        ></div>
        <div
