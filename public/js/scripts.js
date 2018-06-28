@@ -14,9 +14,7 @@ function getProjects() {
     },
     'method': 'GET'
   }).then(response => response.json())
-    .then(data => {
-      prependProjects(data);
-    })
+    .then(data => prependProjects(data))
 }
 
 function postProject(projectName) {
@@ -30,12 +28,24 @@ function postProject(projectName) {
   }).then(response => console.log(response.json()))
 }
 
+function getPalettes() {
+  const url = 'http://localhost:3000/api/v1/palettes'
+  fetch(url, {
+    'headers': {
+      'content-type': 'application/json'
+    },
+    'method': 'GET'
+  }).then(response => response.json())
+    .then(data => prependPalettes(data))
+}
+
 function prependProjects(projects) {
+  console.log('projects', projects)
   projects.forEach(project => {
-    const { name } = project
+    const { name, id } = project
     $('.projects-container').prepend(
       `<div
-        class='project-${name}'
+        class='project-${name} ${id}'
        >
        <h1 class='project-title'>${name}</h1>
        <div class='created-palette-container'>
@@ -46,6 +56,29 @@ function prependProjects(projects) {
       `<option class='${name}'>${name}</option>`
     )
     projects.push(name)
+  })
+}
+
+function prependPalettes(palettes) {
+  palettes.forEach(palette => {
+    const { color1, color2, color3, color4, color5, project_id } = palette
+    $(`.${project_id}`).prepend(
+      `<div
+        style='background-color:${color1}; width: 100px; height: 100px'
+       ></div>
+       <div
+        style = 'background-color:${color2}; width: 100px; height: 100px'
+       ></div>
+       <div
+        style='background-color:${color3}; width: 100px; height: 100px'
+       ></div>
+       <div
+        style='background-color:${color4}; width: 100px; height: 100px'
+       ></div>
+       <div
+        style='background-color:${color5}; width: 100px; height: 100px'
+       ></div>`
+    )
   })
 }
 
@@ -150,5 +183,6 @@ function prependColors() {
 
 prependColors()
 getProjects()
+getPalettes()
 
 
