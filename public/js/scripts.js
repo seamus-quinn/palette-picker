@@ -1,4 +1,4 @@
-const colorPalette =[]
+const colorPalette = []
 const projects = []
 
 $('.palette-generator').on('click', prependColors)
@@ -6,17 +6,51 @@ $('.palette-container').on('click', '.container', toggleLock)
 $('.project-form').on('submit', createProject)
 $('.palette-form').on('submit', savePalette)
 
+function getProjects() {
+  const url = 'http://localhost:3000/api/v1/projects'
+  const fetchedProjects = fetch(url, {
+    'headers': {
+      'content-type': 'application/json'
+    },
+    'method': 'GET'
+  }).then(response => response.json())
+    .then(data => {
+      prependProjects(data);
+    })
+}
+
+function prependProjects(projects) {
+  projects.forEach(project => {
+    const { name } = project
+    $('.projects-container').prepend(
+      `<div
+        class='project-${name}'
+       >
+       <h1 class='project-title'>${name}</h1>
+       <div class='created-palette-container'>
+       </div>
+       </div>`
+    )
+    $('.projects').prepend(
+      `<option class='${name}'>${name}</option>`
+    )
+    projects.push(name)
+  })
+}
+
+getProjects()
+
 function savePalette(event) {
   event.preventDefault();
   const paletteName = $('.palette-input').val();
   const projectName = $('.projects option:selected').text();
   if (projectName === 'Please select a project') {
-    $('.error').remove();    
+    $('.error').remove();
     $('.palette-form').append(
       `<p class='project-name-error error'>Please select or create a project to save a color palette</p>`
     )
   } else if (projectName && !paletteName) {
-    $('.error').remove();    
+    $('.error').remove();
     $('.palette-form').append(
       `<p class='palette-name-error error'>Please input a name for this color palette to save it</p>`
     )
@@ -41,8 +75,8 @@ function savePalette(event) {
 function createProject(event) {
   event.preventDefault();
   const projectName = $('.project-input').val();
-  if (!projects.includes(projectName)){
-    if($('.project-error')){
+  if (!projects.includes(projectName)) {
+    if ($('.project-error')) {
       $('.project-error').remove();
     }
     $('.projects-container').prepend(
@@ -63,7 +97,7 @@ function createProject(event) {
       `<p class='project-error'>That project name already exists, please choose another</p>`
     )
   }
-  
+
 }
 
 function toggleLock() {
@@ -99,7 +133,7 @@ function prependColors() {
       if ($(`.${color}`).hasClass('locked')) {
         return;
       } else {
-        $(`.${color}`).css({ 'background-color': generateColor()})
+        $(`.${color}`).css({ 'background-color': generateColor() })
       }
     })
   }
