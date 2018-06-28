@@ -8,7 +8,7 @@ $('.palette-form').on('submit', savePalette)
 
 function getProjects() {
   const url = 'http://localhost:3000/api/v1/projects'
-  const fetchedProjects = fetch(url, {
+  fetch(url, {
     'headers': {
       'content-type': 'application/json'
     },
@@ -17,6 +17,17 @@ function getProjects() {
     .then(data => {
       prependProjects(data);
     })
+}
+
+function postProject(projectName) {
+  const url = 'http://localhost:3000/api/v1/projects'
+  fetch(url, {
+    'body': JSON.stringify({name: projectName}),
+    'headers': {
+      'content-type': 'application/json'
+    },
+    'method': 'POST'
+  }).then(response => console.log(response.json()))
 }
 
 function prependProjects(projects) {
@@ -37,8 +48,6 @@ function prependProjects(projects) {
     projects.push(name)
   })
 }
-
-getProjects()
 
 function savePalette(event) {
   event.preventDefault();
@@ -92,12 +101,12 @@ function createProject(event) {
       `<option class='${projectName}'>${projectName}</option>`
     )
     projects.push(projectName)
+    postProject(projectName)
   } else {
     $('.project-form').append(
       `<p class='project-error'>That project name already exists, please choose another</p>`
     )
   }
-
 }
 
 function toggleLock() {
@@ -140,4 +149,6 @@ function prependColors() {
 }
 
 prependColors()
+getProjects()
+
 
