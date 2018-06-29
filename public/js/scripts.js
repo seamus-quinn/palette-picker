@@ -21,7 +21,7 @@ function getProjects() {
     },
     'method': 'GET'
   }).then(response => response.json())
-    .then(data => prependProjects(data))
+    .then(data => appendProjects(data))
 }
 
 function postProject(projectName) {
@@ -35,7 +35,7 @@ function postProject(projectName) {
   }).then(response => {
     return response.json()
   }).then(project => {
-    $('.projects').prepend(
+    $('.projects').append(
       `<option value='${project.id}'>${projectName}</option>`
     )
   })
@@ -66,8 +66,7 @@ function createProject(event) {
   }
 }
 
-function prependProjects(projects) {
-  console.log('projects', projects)
+function appendProjects(projects) {
   projects.forEach(project => {
     const { name, id } = project
     $('.projects-container').append(
@@ -79,7 +78,7 @@ function prependProjects(projects) {
        </div>
        </div>`
     )
-    $('.projects').prepend(
+    $('.projects').append(
       `<option value='${id}'>${name}</option>`
     )
     projects.push(name)
@@ -118,27 +117,43 @@ function deletePalette(id) {
       'content-type': 'application/json'
     },
     'method': 'DELETE'
-  }).then(response => console.log(response.json()))
+  }).then(response => console.log(response))
     .catch(error => console.log(error))
 }
 
 function removePaletteFromPage() {
   $(this).parent().remove();
-  deletePalette($(this).parent().attr('class'))
+  deletePalette($(this).parent().attr('value'))
 }
 
 function appendPalette(palette) {
   const { id, name, color1, color2, color3, color4, color5, project_id } = palette
   $(`.${project_id}`).append(
-    `<div class='${id}'>
-        <h1>${name}</h1>
-        ${[color1, color2, color3, color4, color5].map(color => `
-         <div
-          style='background-color:${color}; width: 20px; height: 20px'
-        ></div>
-        `).join('')}
-        <button class='delete-button'>x</button>
-    </div>`
+    `<div class='color-container' value='${id}'>
+      <h1 class='palette-name'>${name}</h1>
+      <div
+        class='palette-color'
+        style='background-color:${color1}'
+      ></div>
+      <div
+        class='palette-color'
+        style='background-color:${color2}'
+      ></div>
+      <div
+        class='palette-color'
+        style='background-color:${color3}'
+      ></div>
+      <div
+        class='palette-color'
+        style='background-color:${color4}'
+      ></div>
+      <div
+        class='palette-color'
+        style='background-color:${color5}'
+      ></div>
+      <button class='delete-button'>x</button>
+    </div>
+    `
   )
 }
 
@@ -188,10 +203,10 @@ function submitPaletteHandler(event) {
       color5: colors[4],
       project_id
     })
-    appendPalette(pallete)
+    appendPalette(palette)
     postPalette(palette)
       .then(response => {
-        $('.waiting').addClass(response.id.toString()).removeClass('waiting')
+        $("div[value*='waiting']").attr('value', response.id.toString()).removeAttr('waiting')
       })
   }
 }

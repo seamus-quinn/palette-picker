@@ -93,7 +93,7 @@ app.post('/api/v1/palettes', (request, response) => {
 app.delete('/api/v1/palettes/:id', (request, response) => {
   const { id } = request.params
 
-  database('palettes').where(id, 'id').del()
+  database('palettes').where('id', id).del()
     .then(rowsDeleted => {
       if(!rowsDeleted) {
         response.status(404).json({"error": "Error no matching ID found, please provide a valid ID."})
