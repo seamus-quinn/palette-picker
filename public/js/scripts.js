@@ -8,7 +8,7 @@ const projects = []
 $('.palette-generator').on('click', prependColors)
 $('.palette-container').on('click', '.container', toggleLock)
 $('.project-form').on('submit', createProject)
-$('.palette-form').on('submit', savePalette)
+$('.palette-form').on('submit', submitPaletteHandler)
 $('.projects-container').on('click', '.delete-button', removePaletteFromPage)
 
 //PROJECT FUNCTIONALITY
@@ -21,13 +21,13 @@ function getProjects() {
     },
     'method': 'GET'
   }).then(response => response.json())
-    .then(data => prependProjects(data))
+    .then(data => appendProjects(data))
 }
 
 function postProject(projectName) {
   const url = 'http://localhost:3000/api/v1/projects'
   fetch(url, {
-    'body': JSON.stringify({name: projectName}),
+    'body': JSON.stringify({ name: projectName }),
     'headers': {
       'content-type': 'application/json'
     },
@@ -35,7 +35,7 @@ function postProject(projectName) {
   }).then(response => {
     return response.json()
   }).then(project => {
-    $('.projects').prepend(
+    $('.projects').append(
       `<option value='${project.id}'>${projectName}</option>`
     )
   })
@@ -48,9 +48,9 @@ function createProject(event) {
     if ($('.project-error')) {
       $('.project-error').remove();
     }
-    $('.projects-container').prepend(
+    $('.projects-container').append(
       `<div
-        class='project-${projectName}'
+        class='project-${projectName} project'
        >
        <h1 class='project-title'>${projectName}</h1>
        <div class='created-palette-container'>
@@ -66,20 +66,19 @@ function createProject(event) {
   }
 }
 
-function prependProjects(projects) {
-  console.log('projects', projects)
+function appendProjects(projects) {
   projects.forEach(project => {
     const { name, id } = project
-    $('.projects-container').prepend(
+    $('.projects-container').append(
       `<div
-        class='project-${name} ${id}'
+        class='project-${name} ${id} project'
        >
        <h1 class='project-title'>${name}</h1>
        <div class='created-palette-container'>
        </div>
        </div>`
     )
-    $('.projects').prepend(
+    $('.projects').append(
       `<option value='${id}'>${name}</option>`
     )
     projects.push(name)
@@ -96,19 +95,18 @@ function getPalettes() {
     },
     'method': 'GET'
   }).then(response => response.json())
-    .then(data => prependPalettes(data))
+    .then(data => appendPalettes(data))
 }
 
-function postPalette(name, color1, color2, color3, color4, color5, project_id) {
-  console.log(project_id, "this is the project_id")
+function postPalette({ name, color1, color2, color3, color4, color5, project_id }) {
   const url = 'http://localhost:3000/api/v1/palettes'
-  fetch(url, {
+  return fetch(url, {
     'body': JSON.stringify({ name, color1, color2, color3, color4, color5, project_id }),
     'headers': {
       'content-type': 'application/json'
     },
     'method': 'POST'
-  }).then(response => console.log(response.json()))
+  }).then(response => response.json())
 }
 
 function deletePalette(id) {
@@ -119,83 +117,97 @@ function deletePalette(id) {
       'content-type': 'application/json'
     },
     'method': 'DELETE'
-  }).then(response => console.log(response.json()))
+  }).then(response => console.log(response))
     .catch(error => console.log(error))
 }
 
 function removePaletteFromPage() {
   $(this).parent().remove();
-  deletePalette($(this).parent().attr('class'))
+  deletePalette($(this).parent().attr('value'))
 }
 
-
-function prependPalettes(palettes) {
-  palettes.forEach(palette => {
-    const { id, name, color1, color2, color3, color4, color5, project_id } = palette
-    $(`.${project_id}`).prepend(
-      `<div class='${id}'>
-        <h1>${name}</h1>
-        <div
-          style='background-color:${color1}; width: 100px; height: 100px'
-        ></div>
-        <div
-          style = 'background-color:${color2}; width: 100px; height: 100px'
-        ></div>
-        <div
-          style='background-color:${color3}; width: 100px; height: 100px'
-        ></div>
-        <div
-          style='background-color:${color4}; width: 100px; height: 100px'
-        ></div>
-        <div
-          style='background-color:${color5}; width: 100px; height: 100px'
-        ></div>
-        <button class='delete-button'>x</button>
-       </div>`
-    )
-  })
+function appendPalette(palette) {
+  const { id, name, color1, color2, color3, color4, color5, project_id } = palette
+  $(`.${project_id}`).append(
+    `<div class='color-container' value='${id}'>
+      <h1 class='palette-name'>${name}</h1>
+      <div
+        class='palette-color'
+        style='background-color:${color1}'
+      ></div>
+      <div
+        class='palette-color'
+        style='background-color:${color2}'
+      ></div>
+      <div
+        class='palette-color'
+        style='background-color:${color3}'
+      ></div>
+      <div
+        class='palette-color'
+        style='background-color:${color4}'
+      ></div>
+      <div
+        class='palette-color'
+        style='background-color:${color5}'
+      ></div>
+      <button class='delete-button'>x</button>
+    </div>
+    `
+  )
 }
 
-function savePalette(event) {
-  event.preventDefault();
-  const paletteName = $('.palette-input').val();
-  const projectName = $('.projects option:selected').text();
-  const projectId = $('.projects option:selected').attr('value')
+function appendPalettes(palettes) {
+  palettes.forEach(palette => appendPalette(palette))
+}
 
+function handleError(paletteName, projectName) {
   if (projectName === 'Please select a project') {
     $('.error').remove();
     $('.palette-form').append(
       `<p class='project-name-error error'>Please select or create a project to save a color palette</p>`
     )
+    return true;
   } else if (projectName && !paletteName) {
     $('.error').remove();
     $('.palette-form').append(
       `<p class='palette-name-error error'>Please input a name for this color palette to save it</p>`
     )
+    return true;
   } else if (!projectName && paletteName) {
     $('.error').remove();
     $('.palette-form').append(
       `<p class='project-name-error error'>Please select or create a project to save a color palette</p>`
     )
+    return true;
   } else {
-    $('.error').remove();
+    return false
+  }
+}
+
+function submitPaletteHandler(event) {
+  event.preventDefault();
+  const paletteName = $('.palette-input').val();
+  const projectName = $('.projects option:selected').text();
+  const project_id = $('.projects option:selected').attr('value')
+  
+  if (!handleError(paletteName, projectName)) {
     const colors = colorPalette.map(palette => $(`.${palette}`).css('background-color'))
-    postPalette(paletteName, ...colors, projectId)
-    const colorDivs = colorPalette.map(palette => {
-      const color = $(`.${palette}`).css('background-color')
-      $(`.project-${projectName}`).append(
-        `<div
-        style='background-color:${color}; width: 100px; height: 100px'
-       ></div>`
-      )
+    const palette = Object.assign({}, {
+      id: 'waiting',
+      name: paletteName,
+      color1: colors[0],
+      color2: colors[1],
+      color3: colors[2],
+      color4: colors[3],
+      color5: colors[4],
+      project_id
     })
-    $(`.project-${projectName}`).append(
-      `<div>
-        <h1>${name}</h1>
-        ${colorDivs}
-      </div>`
-    )
-    
+    appendPalette(palette)
+    postPalette(palette)
+      .then(response => {
+        $("div[value*='waiting']").attr('value', response.id.toString()).removeAttr('waiting')
+      })
   }
 }
 

@@ -100,3 +100,29 @@ hr {
 .project-form {
   margin-top: 20px;
 }
+
+.projects-container {
+  display: flex;
+  justify-content: center;
+  font-family: 'Work Sans', sans-serif;  
+}
+
+.project {
+  border: solid 2px #fff;
+  width: 200px;
+  height: 200px;
+}
+
+.color-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.palette-color {
+  width: 20px;
+  height: 20px;
+}
+
+.palette-name {
+  font-size: 18px;
+}
