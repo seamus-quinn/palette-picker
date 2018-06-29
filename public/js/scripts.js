@@ -14,7 +14,7 @@ $('.projects-container').on('click', '.delete-button', removePaletteFromPage)
 //PROJECT FUNCTIONALITY
 
 function getProjects() {
-  const url = 'http://localhost:3000/api/v1/projects'
+  const url = '/api/v1/projects'
   fetch(url, {
     'headers': {
       'content-type': 'application/json'
@@ -25,7 +25,7 @@ function getProjects() {
 }
 
 function postProject(projectName) {
-  const url = 'http://localhost:3000/api/v1/projects'
+  const url = '/api/v1/projects'
   fetch(url, {
     'body': JSON.stringify({ name: projectName }),
     'headers': {
@@ -88,7 +88,7 @@ function appendProjects(projects) {
 //PALETTE FUNCTIONALITY
 
 function getPalettes() {
-  const url = 'http://localhost:3000/api/v1/palettes'
+  const url = '/api/v1/palettes'
   fetch(url, {
     'headers': {
       'content-type': 'application/json'
@@ -99,7 +99,7 @@ function getPalettes() {
 }
 
 function postPalette({ name, color1, color2, color3, color4, color5, project_id }) {
-  const url = 'http://localhost:3000/api/v1/palettes'
+  const url = '/api/v1/palettes'
   return fetch(url, {
     'body': JSON.stringify({ name, color1, color2, color3, color4, color5, project_id }),
     'headers': {
@@ -110,7 +110,7 @@ function postPalette({ name, color1, color2, color3, color4, color5, project_id 
 }
 
 function deletePalette(id) {
-  const url = `http://localhost:3000/api/v1/palettes/${id}`
+  const url = `/api/v1/palettes/${id}`
   console.log(url)
   fetch(url, {
     'headers': {
