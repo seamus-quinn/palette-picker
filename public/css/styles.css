@@ -100,3 +100,14 @@ hr {
 .project-form {
   margin-top: 20px;
 }
+
+.projects-container {
+  display: flex;
+  justify-content: center;
+}
+
+.project {
+  border: solid 2px #fff;
+  width: 200px;
+  height: 200px;
+}
