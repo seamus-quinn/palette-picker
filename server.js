@@ -107,3 +107,5 @@ app.delete('/api/v1/palettes/:id', (request, response) => { //when a request is 
 app.listen(app.get('port'), () => { //boots up our server to listen for the specified port
   console.log(`${app.locals.title} is running on ${app.get('port')}.`) //logs in the console the app title and whic port its running on
 })
+
+//super duper comment
