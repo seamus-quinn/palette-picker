@@ -1,10 +1,15 @@
 language: node_js
 node_js:
-  - "iojs"
-  - "9.4.0"
+- iojs
+- 9.4.0
 services:
-  - postgresql
-before_script: 
-  -psql -c 'CREATE DATABASE palettepicker;' -U postgres
-notifications: 
+- postgresql
+before_script: "-psql -c 'CREATE DATABASE palettepicker;' -U postgres"
+notifications:
   email: false
+deploy:
+  provider: heroku
+  api_key:
+    secure: PekS3dZLAWxGG/ZdK1Q2s4fgVX/lr9dmRc/f8lOYy+aQzm7WF0CmUeX1T3MrUiNQuUiYvEEgG164VXo5lG8vRQjLLqWirYbqOHtPwnSTycJAIbIk70iBKe4YNtd2ijU+8YZkfo9NLtQa1FQ8ksYQH0ddoMLxGpasbtnSTiKt/lFzg5WhLG8EXTHqbYD9twXzLVbmqrJh+wjW57Q4546ie+X/RqUTwKB4wsPy0BjaGPbd133xIMmrxGtNl53VVGeHYatJWmRb1QCE6semUGZ5rbbJwRXSb7NYKfw0JyIS7ACC4HOEmeybbJ8RSdoBEJHEhF7eJUqvnMx4UK5+ki41GrKaVN4hQY5nK1ugWll+9danJd4RijxZxXxb1pWfoKCsFnZYzmYSPulMeV//HCfsZIPumeGfPBNN6yZoSZGZk7YPvvoD0iD23DI8OAcndZsgFRR7mC5etMFr1AVfn92G4yW8cgVVzzkZTVT9WgJNS0bX3mdjrsZg45dXJNDFwOd0i8wBvoa9k13rDbvYlD/EXfWdcpuys1vQRAdWdVOixdBc7g0UAJ73B/DxxHmoJCuRQ1AArhhIs4HKsvfseFj2Ay9101HXeiPNaww+/p9tmHgwrBTQKpSyOJrg4wwREOyQGA7bSsDhkCdzO+7W0/ZgWGHeTOKzat491ciAcLRTmKY=
+  app: pickthepaletteduh
+  skip_cleanup: true
